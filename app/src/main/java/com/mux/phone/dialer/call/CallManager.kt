@@ -136,18 +136,18 @@ object CallManager {
     fun dtmfStop(call: Call) = call.stopDtmfTone()
 
     @Suppress("DEPRECATION")
-    fun setMuted(m: Boolean) {
+    fun applyMute(m: Boolean) {
         service?.setMuted(m)
         muted = m
     }
 
     @Suppress("DEPRECATION")
-    fun setRoute(r: Int) {
+    fun applyRoute(r: Int) {
         service?.setAudioRoute(r)
     }
 
     fun toggleSpeaker() {
-        setRoute(if (route == CallAudioState.ROUTE_SPEAKER) CallAudioState.ROUTE_EARPIECE else CallAudioState.ROUTE_SPEAKER)
+        applyRoute(if (route == CallAudioState.ROUTE_SPEAKER) CallAudioState.ROUTE_EARPIECE else CallAudioState.ROUTE_SPEAKER)
     }
 
     // ---- recording -------------------------------------------------------------------------------
@@ -163,7 +163,7 @@ object CallManager {
         }
         if (RecordService.begin(ctx, number(call), isIncoming(call))) {
             recordingCall = call
-            if (AppSettings.recSpeaker) setRoute(CallAudioState.ROUTE_SPEAKER)
+            if (AppSettings.recSpeaker) applyRoute(CallAudioState.ROUTE_SPEAKER)
         } else {
             Caller.toast(ctx, "RECORDING NOT POSSIBLE ON THIS PHONE")
         }

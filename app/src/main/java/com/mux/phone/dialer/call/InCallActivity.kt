@@ -186,7 +186,7 @@ fun InCallScreen(onFinish: () -> Unit, onProximity: (Boolean) -> Unit, onAddCall
                             }
                         } else {
                             Row(Modifier.fillMaxWidth().height(66.dp)) {
-                                HudButton("MUTE", Modifier.weight(1f).fillMaxHeight(), KeyKind.OP, selected = CallManager.muted, fontSize = 13.sp) { CallManager.setMuted(!CallManager.muted) }
+                                HudButton("MUTE", Modifier.weight(1f).fillMaxHeight(), KeyKind.OP, selected = CallManager.muted, fontSize = 13.sp) { CallManager.applyMute(!CallManager.muted) }
                                 HudButton("KEYPAD", Modifier.weight(1f).fillMaxHeight(), KeyKind.OP, fontSize = 13.sp) { showPad = true }
                                 HudButton("SPEAKER", Modifier.weight(1f).fillMaxHeight(), KeyKind.OP, selected = speaker, fontSize = 13.sp) { CallManager.toggleSpeaker() }
                             }
