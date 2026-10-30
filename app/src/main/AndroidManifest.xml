@@ -92,6 +92,20 @@
             </intent-filter>
         </service>
 
+        <!-- Keeps microphone access during calls (recording boost). Does not read the screen. -->
+        <service
+            android:name=".call.CallAccessibilityService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service" />
+        </service>
+
         <service
             android:name=".call.RecordService"
             android:exported="false"
