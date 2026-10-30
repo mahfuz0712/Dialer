@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Dialer</string>
+    <string name="accessibility_description">Lets Dialer keep microphone access during phone calls so call recordings are not silent. Dialer does not read your screen.</string>
 </resources>
