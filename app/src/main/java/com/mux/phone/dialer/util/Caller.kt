@@ -66,10 +66,19 @@ object Caller {
     }
 
     fun place(ctx: Context, number: String, handle: Parcelable?) {
+        AppSettings.lastDialed = number
+        // Preferred: go straight through Telecom. No "Complete action using" chooser (Zoom etc.).
+        if (Build.VERSION.SDK_INT >= 23) {
+            try {
+                TelecomHelper.placeCall(ctx, number, handle)
+                return
+            } catch (e: Exception) {
+            }
+        }
+        // Fallback (Android 5.x or if Telecom refused)
         val i = Intent(Intent.ACTION_CALL, Uri.fromParts("tel", number, null))
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         if (handle != null) i.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", handle)
-        AppSettings.lastDialed = number
         try {
             ctx.startActivity(i)
         } catch (e: Exception) {
