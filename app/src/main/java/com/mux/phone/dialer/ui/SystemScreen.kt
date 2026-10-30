@@ -1,5 +1,6 @@
 package com.mux.phone.dialer.ui
 
+import android.content.Intent
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mux.phone.dialer.AppInfo
+import com.mux.phone.dialer.call.CallAccessibilityService
 import com.mux.phone.dialer.call.TelecomHelper
 import com.mux.phone.dialer.data.AppSettings
 import com.mux.phone.dialer.data.AppState
@@ -55,6 +57,7 @@ fun SystemScreen(tablet: Boolean, onUpdateFound: (UpdateInfo) -> Unit) {
                     ContactSettingsPanel(Modifier.fillMaxWidth())
                     Gap(); DialerSettingsPanel(Modifier.fillMaxWidth())
                     Gap(); RecordingSettingsPanel(Modifier.fillMaxWidth())
+                    Gap(); AccessibilityPanel(Modifier.fillMaxWidth())
                     Gap(); AuthorPanel(open, Modifier.fillMaxWidth())
                 }
             }
@@ -65,6 +68,7 @@ fun SystemScreen(tablet: Boolean, onUpdateFound: (UpdateInfo) -> Unit) {
             Gap(); ContactSettingsPanel(Modifier.fillMaxWidth())
             Gap(); DialerSettingsPanel(Modifier.fillMaxWidth())
             Gap(); RecordingSettingsPanel(Modifier.fillMaxWidth())
+            Gap(); AccessibilityPanel(Modifier.fillMaxWidth())
             Gap(); UpdatePanel(onUpdateFound, Modifier.fillMaxWidth())
             Gap(); AuthorPanel(open, Modifier.fillMaxWidth())
             Gap(); MoreAppsPanel(open, Modifier.fillMaxWidth())
@@ -253,6 +257,40 @@ private fun RecordingSettingsPanel(modifier: Modifier) {
             "ANDROID 10+ BLOCKS APPS FROM HEARING THE OTHER SIDE OF A CALL. THE OTHER PERSON IS USUALLY RECORDED ONLY ON SPEAKER. *VOICE CALL WORKS ONLY ON A FEW PHONES / CUSTOM ROMS. RECORD ONLY WHERE THE LAW ALLOWS IT.",
             color = c.dim, size = 9.sp
         )
+    }
+}
+
+@Composable
+private fun AccessibilityPanel(modifier: Modifier) {
+    val c = Hud.colors
+    val ctx = LocalContext.current
+    val on = remember(AppState.resumeTick) { CallAccessibilityService.isEnabled(ctx) }
+    HudPanel(modifier, "RECORDING BOOST") {
+        HudText(
+            if (on) "● BOOST IS ON" else "○ BOOST IS OFF",
+            color = if (on) c.good else c.accent, size = 13.sp, bold = true
+        )
+        Spacer(Modifier.height(4.dp))
+        HudText(
+            "If recordings are silent, turn this on. It keeps microphone access during calls on many phones. It does not read your screen.",
+            color = c.text, size = 12.sp
+        )
+        Spacer(Modifier.height(6.dp))
+        HudText(
+            "STEPS: 1) APP SETTINGS > ⋮ MENU > ALLOW RESTRICTED SETTINGS (IF SHOWN). 2) OPEN ACCESSIBILITY > INSTALLED APPS > DIALER > TURN ON.",
+            color = c.dim, size = 9.sp
+        )
+        Spacer(Modifier.height(8.dp))
+        Row(Modifier.fillMaxWidth().height(44.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            HudButton("OPEN ACCESSIBILITY", Modifier.weight(1f).height(44.dp), KeyKind.ACCENT, fontSize = 11.sp) {
+                try {
+                    ctx.startActivity(Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } catch (e: Exception) {
+                    Caller.toast(ctx, "NOT AVAILABLE ON THIS PHONE")
+                }
+            }
+            HudButton("APP SETTINGS", Modifier.weight(1f).height(44.dp), KeyKind.FN, fontSize = 11.sp) { Caller.openAppSettings(ctx) }
+        }
     }
 }
 
