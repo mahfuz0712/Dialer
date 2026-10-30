@@ -3,7 +3,11 @@ package com.mux.phone.dialer.call
 import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
+import android.os.Bundle
+import android.os.Parcelable
+import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import androidx.annotation.RequiresApi
 import com.mux.phone.dialer.util.SimOption
@@ -26,6 +30,14 @@ object TelecomHelper {
         }
     } catch (e: SecurityException) {
         emptyList()
+    }
+
+    /** Places a call straight through Telecom (no "complete action using" chooser). Needs CALL_PHONE. */
+    fun placeCall(ctx: Context, number: String, handle: Parcelable?) {
+        val tm = ctx.getSystemService(Context.TELECOM_SERVICE) as TelecomManager
+        val extras = Bundle()
+        if (handle is PhoneAccountHandle) extras.putParcelable(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, handle)
+        tm.placeCall(Uri.fromParts("tel", number, null), extras)
     }
 
     /** Intent that asks the user to make Dialer the default phone app (null if already / not possible). */
