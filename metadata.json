@@ -1,0 +1,10 @@
+{
+  "name": "Dialer",
+  "description": "A sci-fi HUD styled phone dialer with keypad, call log, contacts (phone, SIM and Google accounts), call recording and dialer settings. Adaptive UI for phones and tablets.",
+  "version": "1.0.0",
+  "ageRating": "3+",
+  "type": "app",
+  "containsAds": false,
+  "category": "communication",
+  "author": "Mohammad Mahfuz Rahman"
+}
