@@ -76,9 +76,9 @@ object CallManager {
         calls.add(call)
         tick++
         CallNotifier.update(ctx)
-        // Outgoing: open the call screen right away. Incoming: full-screen notification does it,
-        // unless notifications are blocked.
-        if (!ringing || !NotificationManagerCompat.from(ctx).areNotificationsEnabled()) openUi(ctx)
+        // Open our own call screen right away, for incoming calls too. The notification (with a
+        // full-screen intent) stays as a backup, because some phones block background launches.
+        openUi(ctx)
     }
 
     fun onRemoved(ctx: Context, call: Call) {
