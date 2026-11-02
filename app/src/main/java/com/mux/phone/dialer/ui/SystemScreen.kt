@@ -48,6 +48,7 @@ fun SystemScreen(tablet: Boolean, onUpdateFound: (UpdateInfo) -> Unit) {
                 Column(Modifier.weight(1f)) {
                     AppPanel(Modifier.fillMaxWidth())
                     Gap(); DefaultDialerPanel(Modifier.fillMaxWidth())
+                    Gap(); IncomingScreenPanel(Modifier.fillMaxWidth())
                     Gap(); PermissionsPanel(Modifier.fillMaxWidth())
                     Gap(); UpdatePanel(onUpdateFound, Modifier.fillMaxWidth())
                     Gap(); MoreAppsPanel(open, Modifier.fillMaxWidth())
@@ -64,6 +65,7 @@ fun SystemScreen(tablet: Boolean, onUpdateFound: (UpdateInfo) -> Unit) {
         } else {
             AppPanel(Modifier.fillMaxWidth())
             Gap(); DefaultDialerPanel(Modifier.fillMaxWidth())
+            Gap(); IncomingScreenPanel(Modifier.fillMaxWidth())
             Gap(); PermissionsPanel(Modifier.fillMaxWidth())
             Gap(); ContactSettingsPanel(Modifier.fillMaxWidth())
             Gap(); DialerSettingsPanel(Modifier.fillMaxWidth())
